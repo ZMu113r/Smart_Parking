@@ -3,6 +3,7 @@ package com.example.smart_future.smart_parking.Activities;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
+import com.example.smart_future.smart_parking.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

@@ -1,5 +1,7 @@
 package com.example.smart_future.smart_parking.Activities;
 
+//import android.app.FragmentManager;
+import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -7,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.example.smart_future.smart_parking.Fragments.ListDestinationsFragment;
 import com.example.smart_future.smart_parking.R;
 
 public class DestinationSelectionActivity extends AppCompatActivity {
@@ -26,5 +29,9 @@ public class DestinationSelectionActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        ListDestinationsFragment listItemFragment = new ListDestinationsFragment();
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.mainLayout, listItemFragment).commit();
     }
 }
