@@ -1,37 +1,35 @@
 package com.example.smart_future.smart_parking.Activities;
 
-//import android.app.FragmentManager;
-import android.support.v4.app.FragmentManager;
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
-import com.example.smart_future.smart_parking.Fragments.ListDestinationsFragment;
 import com.example.smart_future.smart_parking.R;
 
-public class DestinationSelectionActivity extends AppCompatActivity {
+public class DestinationSelectionActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_destination_selection);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        // Create list view access
+        ListView lvData = findViewById(R.id.lvData);
+        lvData.setOnItemClickListener(this);
+    }
 
-        ListDestinationsFragment listItemFragment = new ListDestinationsFragment();
-        FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.mainLayout, listItemFragment).commit();
+    // General method to show that moving between screens works
+    // NEEDS TO BE CHANGED - different destinations take you to different routes
+    public void onItemClick(AdapterView<?> adapterView, View v, int position, long id) {
+        // Start a new activity
+        Intent intent = new Intent();
+        intent.setClass(this, LoadingActivity.class);
+        intent.putExtra("id", id);
+        startActivity(intent);
     }
 }
