@@ -6,10 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ProgressBar;
 
+import com.example.smart_future.smart_parking.Entities.Destination;
 import com.example.smart_future.smart_parking.R;
 
 public class LoadingActivity extends AppCompatActivity {
 
+    private Destination dest;
     private ProgressBar spinner;
 
     @Override
@@ -17,6 +19,10 @@ public class LoadingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
 
+        // unpack
+        dest = getIntent().getExtras().getParcelable("destination");
+
+        // Grab reference to spinner from layout
         spinner = (ProgressBar) findViewById(R.id.progressBar);
 
         /*** You can do magic tricks with the spinner ***/
@@ -29,10 +35,13 @@ public class LoadingActivity extends AppCompatActivity {
             @Override
             public void run() {
                 final Intent timedIntent= new Intent(LoadingActivity.this, RouteSelectionActivity.class);
+                // repack
+                timedIntent.putExtra("destination", dest);
+
                 LoadingActivity.this.startActivity(timedIntent);
                 LoadingActivity.this.finish();
             }
-        }, 5000);
+        }, 2000);
     }
 
 

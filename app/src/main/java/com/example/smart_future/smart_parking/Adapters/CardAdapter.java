@@ -1,14 +1,16 @@
 package com.example.smart_future.smart_parking.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.smart_future.smart_parking.Activities.NavigationActivity;
 import com.example.smart_future.smart_parking.Models.CardModel;
 import com.example.smart_future.smart_parking.R;
 import com.huxq17.swipecardsview.BaseCardAdapter;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -40,19 +42,20 @@ public class CardAdapter extends BaseCardAdapter {
         return R.layout.card_item;
     }
 
+
     @Override
-    public void onBindData(int position, View cardview) {
+    public void onBindData(int position, View cardView) {
         if(modelList == null || modelList.size() == 0) {
             return;
         }
 
         // Grab view element references
-        ImageView imageView = cardview.findViewById(R.id.imageView);
-        TextView textView = cardview.findViewById(R.id.textView);
+        ImageView imageView = cardView.findViewById(R.id.floor_image);
+        TextView textView = cardView.findViewById(R.id.floor_number);
         CardModel cardmodel = modelList.get(position);
 
         // Give them content to display
         textView.setText(cardmodel.getTitle());
-        Picasso.with(context).load(cardmodel.getImage()).into(imageView);
+        imageView.setImageDrawable(cardmodel.getImage());
     }
 }

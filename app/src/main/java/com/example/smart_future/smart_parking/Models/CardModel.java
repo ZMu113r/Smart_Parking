@@ -1,5 +1,8 @@
 package com.example.smart_future.smart_parking.Models;
 
+import android.graphics.drawable.Drawable;
+import android.widget.ImageView;
+
 /**
  * Created by Zach on 1/13/2018.
  */
@@ -8,10 +11,10 @@ public class CardModel {
 
     public String title;
 
-    public String image;
+    public Drawable image;
 
 
-    public CardModel(String title, String image) {
+    public CardModel(String title, Drawable image) {
         title = this.title;
         image = this.image;
     }
@@ -22,7 +25,7 @@ public class CardModel {
         return title;
     }
 
-    public String getImage() {
+    public Drawable getImage() {
         return image;
     }
 
@@ -33,7 +36,7 @@ public class CardModel {
         this.title = title;
     }
 
-    public void setImage(String image) {
+    public void setImage(Drawable image) {
         this.image = image;
     }
 }
