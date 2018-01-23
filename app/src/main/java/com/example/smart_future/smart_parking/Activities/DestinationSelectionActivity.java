@@ -16,6 +16,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.smart_future.smart_parking.Entities.Destination;
+import com.example.smart_future.smart_parking.Entities.Garage;
+import com.example.smart_future.smart_parking.Entities.User;
 import com.example.smart_future.smart_parking.Handlers.HttpDataHandler;
 import com.example.smart_future.smart_parking.R;
 
@@ -23,6 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -32,11 +35,18 @@ public class DestinationSelectionActivity extends AppCompatActivity implements A
 
     private Destination dest = new Destination();
 
+    private ArrayList<Garage> garages = new ArrayList<>();
+
+    private User currentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_destination_selection);
+
+        // Get current user from intent
+        currentUser = getIntent().getExtras().getParcelable("currentUser");
 
         // Create list view access
         lvData = findViewById(R.id.lvData);
@@ -104,12 +114,17 @@ public class DestinationSelectionActivity extends AppCompatActivity implements A
                 dest.setLatitude(Double.parseDouble(lat));
                 dest.setLongitude(Double.parseDouble(lng));
 
+                // Find best garages for chosen destination
+                garages = findClosestGarages();
+
                 // Create a new activity intent
                 Intent intent = new Intent();
                 intent.setClass(DestinationSelectionActivity.this, RouteSelectionActivity.class);
 
                 // Pass in chosen destination
                 intent.putExtra("destination", dest);
+                // Pass in list of garages
+                intent.putParcelableArrayListExtra("garages", garages);
 
                 startActivity(intent);
 
@@ -117,5 +132,11 @@ public class DestinationSelectionActivity extends AppCompatActivity implements A
                 je.printStackTrace();
             }
         }
+    }
+
+    // Method used to find 3 best garages for chosen destination
+    private ArrayList<Garage> findClosestGarages() {
+        ArrayList<Garage> garages = new ArrayList<>();
+        return garages;
     }
 }

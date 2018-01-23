@@ -54,9 +54,9 @@ public class RouteSelectionActivity extends AppCompatActivity {
     }
     /*** CHANGE TO BE DYNAMIC WITH EACH GARAGE ***/
     private void getData() {
-        cardModelList.add(new CardModel("Floor 1", getDrawable(R.drawable.ucf_logo)));
-        cardModelList.add(new CardModel("Floor 2", getDrawable(R.drawable.ucf_logo)));
-        cardModelList.add(new CardModel("Floor 3", getDrawable(R.drawable.ucf_logo)));
+        cardModelList.add(new CardModel("F", 300, "5 minutes 20 seconds", "3 minutes"));
+        cardModelList.add(new CardModel("H", 300, "5 minutes 20 seconds", "3 minutes"));
+        cardModelList.add(new CardModel("I", 300, "5 minutes 20 seconds", "3 minutes"));
 
         CardAdapter cardAdapter = new CardAdapter(cardModelList, this);
         swipeCardsView.setAdapter(cardAdapter);

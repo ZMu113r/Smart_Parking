@@ -50,12 +50,16 @@ public class CardAdapter extends BaseCardAdapter {
         }
 
         // Grab view element references
-        ImageView imageView = cardView.findViewById(R.id.floor_image);
-        TextView textView = cardView.findViewById(R.id.floor_number);
         CardModel cardmodel = modelList.get(position);
+        TextView garageTextView = cardView.findViewById(R.id.garage);
+        TextView spotsLeftTextView = cardView.findViewById(R.id.spots_left);
+        TextView arrivalTimeTextView = cardView.findViewById(R.id.arrival_time);
+        TextView walkingTimeTexzView = cardView.findViewById(R.id.walking_time);
 
         // Give them content to display
-        textView.setText(cardmodel.getTitle());
-        imageView.setImageDrawable(cardmodel.getImage());
+        garageTextView.setText(String.valueOf(cardmodel.getgarage()));
+        spotsLeftTextView.setText(String.valueOf(cardmodel.getNumSpotsLeft()));
+        arrivalTimeTextView.setText(String.valueOf(cardmodel.getTimeToArrive()));
+        walkingTimeTexzView.setText(String.valueOf(cardmodel.getWalkingTime()));
     }
 }

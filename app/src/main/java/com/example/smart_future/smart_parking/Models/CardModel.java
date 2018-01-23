@@ -1,7 +1,5 @@
 package com.example.smart_future.smart_parking.Models;
 
-import android.graphics.drawable.Drawable;
-import android.widget.ImageView;
 
 /**
  * Created by Zach on 1/13/2018.
@@ -9,34 +7,47 @@ import android.widget.ImageView;
 
 public class CardModel {
 
-    public String title;
+    private String garage;
 
-    public Drawable image;
+    private int numSpotsLeft;
+
+    private String timeToArrive;
+
+    private String walkingTime;
 
 
-    public CardModel(String title, Drawable image) {
-        title = this.title;
-        image = this.image;
+    public CardModel(String garage, int numSpotsLeft, String timeToArrive, String walkingTime) {
+        garage = this.garage;
+        numSpotsLeft = this.numSpotsLeft;
+        timeToArrive = this.timeToArrive;
+        walkingTime = this.walkingTime;
     }
 
 
     // Getters
-    public String getTitle() {
-        return title;
+    public String getgarage() {
+        return garage;
     }
 
-    public Drawable getImage() {
-        return image;
+    public int getNumSpotsLeft() {
+        return numSpotsLeft;
     }
+
+    public String getTimeToArrive() { return  timeToArrive; }
+
+    public String getWalkingTime() { return  walkingTime; }
 
 
     // Setters
-
-    public void setTitle(String title) {
-        this.title = title;
+    public void setgarage(String garage) {
+        this.garage = garage;
     }
 
-    public void setImage(Drawable image) {
-        this.image = image;
+    public void setNumSpotsLeft(int numSpotsLeft) {
+        this.numSpotsLeft = numSpotsLeft;
     }
+
+    public  void  setTimeToArrive(String timeToArrive) { this.timeToArrive = timeToArrive; }
+
+    public void setWalkingTime(String walkingTime) { this.walkingTime = walkingTime; }
 }
