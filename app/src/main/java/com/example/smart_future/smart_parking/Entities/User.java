@@ -56,7 +56,7 @@ public class User implements Parcelable, Comparable{
     };
 
     // Un-flatten parcel
-    public User(Parcel in) {
+    private User(Parcel in) {
         parking_status = in.readString();
         location = Location.CREATOR.createFromParcel(in);
     }

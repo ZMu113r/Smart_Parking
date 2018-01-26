@@ -44,15 +44,17 @@ public class DestinationSelectionActivity extends AppCompatActivity implements A
         setContentView(R.layout.activity_destination_selection);
 
         // Get current user from intent
-        currentUser = getIntent().getExtras().getParcelable("currentUser");
+        currentUser = getIntent().getExtras().getParcelable("current user");
+
+        // Create a listener for the sensors
 
         // Create list view access
         lvData = findViewById(R.id.lvData);
+        // Listen for a user to choose their destination
         lvData.setOnItemClickListener(this);
     }
 
     // General method to show that moving between screens works
-    // NEEDS TO BE CHANGED - different destinations take you to different routes
     public void onItemClick(AdapterView<?> adapterView, View v, int position, long id) {
         // get name from clicked item
         String selectedDestination = lvData.getItemAtPosition(position).toString();
@@ -138,15 +140,16 @@ public class DestinationSelectionActivity extends AppCompatActivity implements A
 
 
                 // Create a new activity intent
-                Intent intent = new Intent();
-                intent.setClass(DestinationSelectionActivity.this, RouteSelectionActivity.class);
+                Intent intent = new Intent(DestinationSelectionActivity.this, RouteSelectionActivity.class);
 
-                // Pass in chosen destination
-                intent.putExtra("destination", dest);
-                // Pass in list of garages
-                intent.putParcelableArrayListExtra("garages", garages);
-                // pass in list of closest garages to users destination
-                intent.putParcelableArrayListExtra("closest garages", closestGarages);
+                // Bundle it up
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("current user", currentUser);
+                bundle.putParcelable("destination", dest);
+                bundle.putParcelableArrayList("garages", garages);
+                bundle.putParcelableArrayList("closest garages", closestGarages);
+
+                intent.putExtra("bundle", bundle);
 
                 startActivity(intent);
 

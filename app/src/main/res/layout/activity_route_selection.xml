@@ -12,6 +12,12 @@
     tools:context="com.example.smart_future.smart_parking.Activities.RouteSelectionActivity"
     android:background="@color/colorPrimaryDark">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </android.support.v7.widget.RecyclerView>
+
     <com.huxq17.swipecardsview.SwipeCardsView
         android:id="@+id/swipeCardsView"
         android:background="@color/colorPrimaryDark"

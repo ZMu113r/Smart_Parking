@@ -2,7 +2,11 @@ package com.example.smart_future.smart_parking.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,7 +22,7 @@ import java.util.List;
  * Created by Zach on 1/13/2018.
  */
 
-public class CardAdapter extends BaseCardAdapter {
+public class CardAdapter extends RecyclerView.Adapter<CardAdapter.SwipeableCardViewHolder> {
 
     private List<CardModel> modelList;
 
@@ -30,36 +34,57 @@ public class CardAdapter extends BaseCardAdapter {
         this.context = context;
     }
 
+    @Override
+    public SwipeableCardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+
+        View view = inflater.inflate(R.layout.card_item, null);
+
+        SwipeableCardViewHolder holder = new SwipeableCardViewHolder(view);
+
+        return holder;
+    }
 
     // Getters
     @Override
-    public int getCount() {
+    public int getItemCount() {
         return modelList.size();
     }
 
     @Override
-    public int getCardLayoutId() {
-        return R.layout.card_item;
-    }
-
-
-    @Override
-    public void onBindData(int position, View cardView) {
+    public void onBindViewHolder(SwipeableCardViewHolder holder, int position) {
         if(modelList == null || modelList.size() == 0) {
             return;
         }
 
         // Grab view element references
         CardModel cardmodel = modelList.get(position);
-        TextView garageTextView = cardView.findViewById(R.id.garage);
-        TextView spotsLeftTextView = cardView.findViewById(R.id.spots_left);
-        TextView arrivalTimeTextView = cardView.findViewById(R.id.arrival_time);
-        TextView walkingTimeTexzView = cardView.findViewById(R.id.walking_time);
+
+        TextView garageTextView = holder.garage;
+        TextView spotsLeftTextView = holder.spots_left;
+        TextView arrivalTimeTextView = holder.arrival_time;
+        TextView walkingTimeTextView = holder.walking_time;
 
         // Give them content to display
         garageTextView.setText(String.valueOf(cardmodel.getgarage()));
         spotsLeftTextView.setText(String.valueOf(cardmodel.getNumSpotsLeft()));
         arrivalTimeTextView.setText(String.valueOf(cardmodel.getTimeToArrive()));
-        walkingTimeTexzView.setText(String.valueOf(cardmodel.getWalkingTime()));
+        walkingTimeTextView.setText(String.valueOf(cardmodel.getWalkingTime()));
+    }
+
+    class SwipeableCardViewHolder extends RecyclerView.ViewHolder {
+        TextView garage;
+        TextView spots_left;
+        TextView arrival_time;
+        TextView walking_time;
+
+        public SwipeableCardViewHolder(View itemView) {
+            super(itemView);
+
+            garage = itemView.findViewById(R.id.garage);
+            spots_left = itemView.findViewById(R.id.spots_left);
+            arrival_time = itemView.findViewById(R.id.arrival_time);
+            walking_time = itemView.findViewById(R.id.walking_time);
+        }
     }
 }

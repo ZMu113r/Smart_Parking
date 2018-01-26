@@ -19,7 +19,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 public class HomeActivity extends AppCompatActivity {
     private int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0;
+
     private FusedLocationProviderClient mFusedLocationClient;
+
     private User currentUser;
 
     @Override
@@ -80,7 +82,7 @@ public class HomeActivity extends AppCompatActivity {
                                         currentUser = new User("not parked", location);
 
                                         Intent intent = new Intent(HomeActivity.this, DestinationSelectionActivity.class);
-                                        intent.putExtra("currentUser", currentUser);
+                                        intent.putExtra("current user", currentUser);
                                         startActivity(intent);
                                     }
                                 }
