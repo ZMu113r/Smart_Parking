@@ -4,12 +4,13 @@ package com.example.smart_future.smart_parking.Entities;
 import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 /**
  * Created by Zach on 1/6/2018.
  */
 
-public class User implements Parcelable{
+public class User implements Parcelable, Comparable{
     private String parking_status;
 
     private Location location;
@@ -58,5 +59,12 @@ public class User implements Parcelable{
     public User(Parcel in) {
         parking_status = in.readString();
         location = Location.CREATOR.createFromParcel(in);
+    }
+
+
+    // Comparable implementation methods
+    @Override
+    public int compareTo(@NonNull Object o) {
+        return 0;
     }
 }

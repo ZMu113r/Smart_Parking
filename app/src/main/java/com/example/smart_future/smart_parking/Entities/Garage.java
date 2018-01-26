@@ -3,6 +3,7 @@ package com.example.smart_future.smart_parking.Entities;
 import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
@@ -10,12 +11,27 @@ import java.util.ArrayList;
  * Created by Zach on 1/4/2018.
  */
 
-public class Garage implements Parcelable{
+public class Garage implements Parcelable, Comparable {
 
     private String name;
     private String status;
     private int capacity;
+    private double latitude;
+    private double longitude;
+    private double destinationDistance;
+    private double userDistance;
     private ArrayList<Floor> floors;
+
+
+    public Garage(String name, String status, int capacity, double latitude, double longitude, ArrayList<Floor> floors) {
+        this.name = name;
+        this.status = status;
+        this.capacity = capacity;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.floors = floors;
+    }
+
 
     // Getters
     public String getName() { return name; }
@@ -24,17 +40,55 @@ public class Garage implements Parcelable{
 
     public int getCapacity() { return  capacity; }
 
+    public double getLatitude() { return latitude; }
+
+    public double getLongitude() { return longitude; }
+
+    public double getDestinationDistance() {
+        return destinationDistance;
+    }
+
+    public double getUserDistance() {
+        return userDistance;
+    }
+
     public ArrayList<Floor> getFloors() { return  floors; }
 
 
     // Setters
-    public void setName(String name) { name = this.name; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public void setStatus(String status) { status = this.status; }
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-    public void setCapacity(int capacity) { capacity = this.capacity; }
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
 
-    public void setFloors(ArrayList<Floor> floors) { floors = this.floors; }
+    public void setFloors(ArrayList<Floor> floors) {
+        this.floors = floors;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setDestinationDistance(double destinationDistance) {
+        this.destinationDistance = destinationDistance;
+    }
+
+    public void setUserDistance(double userDistance) {
+        this.userDistance = userDistance;
+    }
+
+
 
     // Parcelable implementation methods
     @Override
@@ -47,6 +101,10 @@ public class Garage implements Parcelable{
         desc.writeString(name);
         desc.writeString(status);
         desc.writeInt(capacity);
+        desc.writeDouble(latitude);
+        desc.writeDouble(longitude);
+        desc.writeDouble(destinationDistance);
+        desc.writeDouble(userDistance);
         desc.writeTypedList(floors);
     }
 
@@ -65,6 +123,17 @@ public class Garage implements Parcelable{
         name = in.readString();
         status = in.readString();
         capacity = in.readInt();
+        latitude = in.readDouble();
+        longitude = in.readDouble();
+        destinationDistance = in.readDouble();
+        userDistance = in.readDouble();
         in.readTypedList(floors, Floor.CREATOR);
+    }
+
+
+    // Comparable implementation methods
+    @Override
+    public int compareTo(@NonNull Object o) {
+        return 0;
     }
 }

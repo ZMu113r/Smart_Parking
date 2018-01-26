@@ -2,6 +2,7 @@ package com.example.smart_future.smart_parking.Entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import static java.lang.System.out;
  * Created by Zach on 1/4/2018.
  */
 
-public class Destination implements Parcelable {
+public class Destination implements Parcelable, Comparable {
 
     private String name;
     private double longitude;
@@ -68,5 +69,13 @@ public class Destination implements Parcelable {
         name = in.readString();
         longitude = in.readDouble();
         latitude = in.readDouble();
+    }
+
+
+    // Comparable implementation methods
+
+    @Override
+    public int compareTo(@NonNull Object o) {
+        return 0;
     }
 }

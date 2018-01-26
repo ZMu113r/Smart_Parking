@@ -1,13 +1,8 @@
 package com.example.smart_future.smart_parking.Activities;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.AsyncTask;
-import android.os.Parcel;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +14,8 @@ import com.example.smart_future.smart_parking.Entities.Destination;
 import com.example.smart_future.smart_parking.Entities.Garage;
 import com.example.smart_future.smart_parking.Entities.User;
 import com.example.smart_future.smart_parking.Handlers.HttpDataHandler;
+import com.example.smart_future.smart_parking.Handlers.DestinationSortingHandler;
+import com.example.smart_future.smart_parking.Handlers.UserLocationSortingHandler;
 import com.example.smart_future.smart_parking.R;
 
 import org.json.JSONArray;
@@ -26,8 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.Collections;
 
 public class DestinationSelectionActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -36,6 +32,8 @@ public class DestinationSelectionActivity extends AppCompatActivity implements A
     private Destination dest = new Destination();
 
     private ArrayList<Garage> garages = new ArrayList<>();
+
+    ArrayList<Garage> closestGarages = new ArrayList<>();
 
     private User currentUser;
 
@@ -104,6 +102,7 @@ public class DestinationSelectionActivity extends AppCompatActivity implements A
         @Override
         protected void onPostExecute(String s) {
             try {
+                // Get users destination
                 JSONObject jsonObject = new JSONObject(s);
 
                 String lat = ((JSONArray)jsonObject.get("results")).getJSONObject(0).getJSONObject("geometry")
@@ -114,8 +113,29 @@ public class DestinationSelectionActivity extends AppCompatActivity implements A
                 dest.setLatitude(Double.parseDouble(lat));
                 dest.setLongitude(Double.parseDouble(lng));
 
+
+
+                // Fill list of Garages
+                /*** IMPLEMENT FLOOR CREATION WITH "LIVE" SENSOR DATA ***/
+                garages.add(new Garage("A", getGarageStatus(), 1623, 28.599628287126819, -81.205337047576904,
+                        null));
+                garages.add(new Garage("B", getGarageStatus(), 1259, 28.596894840943857, -81.199806207588182,
+                        null));
+                garages.add(new Garage("C", getGarageStatus(), 1852, 28.60190616876525, -81.19560050385283,
+                        null));
+                garages.add(new Garage("D", getGarageStatus(), 1241, 28.605372511338587, -81.197520965507493,
+                        null));
+                garages.add(new Garage("H", getGarageStatus(), 1284, 28.604800000000001, -81.200800000000001,
+                        null));
+                garages.add(new Garage("I", getGarageStatus(), 1231, 28.601134467682712, -81.205452257564559,
+                        null));
+                garages.add(new Garage("Libra", getGarageStatus(), 1007, 28.595600375707001, -81.196646690368652,
+                        null));
+
                 // Find best garages for chosen destination
-                garages = findClosestGarages();
+                findClosestGarages();
+
+
 
                 // Create a new activity intent
                 Intent intent = new Intent();
@@ -125,6 +145,8 @@ public class DestinationSelectionActivity extends AppCompatActivity implements A
                 intent.putExtra("destination", dest);
                 // Pass in list of garages
                 intent.putParcelableArrayListExtra("garages", garages);
+                // pass in list of closest garages to users destination
+                intent.putParcelableArrayListExtra("closest garages", closestGarages);
 
                 startActivity(intent);
 
@@ -135,8 +157,38 @@ public class DestinationSelectionActivity extends AppCompatActivity implements A
     }
 
     // Method used to find 3 best garages for chosen destination
-    private ArrayList<Garage> findClosestGarages() {
-        ArrayList<Garage> garages = new ArrayList<>();
-        return garages;
+    private void findClosestGarages() {
+        // Get distances from every garage to destination and
+        // Get distances from every garage to user's location
+        for(Garage g : garages) {
+            g.setDestinationDistance(Math.hypot((g.getLatitude() - dest.getLatitude()), (g.getLongitude() - dest.getLongitude())));
+            g.setUserDistance(Math.hypot((currentUser.getLocation().getLatitude() - g.getLatitude()), (currentUser.getLocation().getLongitude() - g.getLongitude())));
+        }
+
+
+        // sort destinationDistance
+        Collections.sort(garages, new DestinationSortingHandler());
+        // Get 1st and 2nd items in destinationDistances as options for user
+        closestGarages.add(garages.get(0));
+        if(!closestGarages.contains(garages.get(1))) {
+            closestGarages.add(garages.get(1));
+        }
+
+
+        // sort userDistance
+        Collections.sort(garages, new UserLocationSortingHandler());
+        // Get 1st item from userLocationDistances as option for user
+        if(!closestGarages.contains(garages.get(0))) {
+            closestGarages.add(garages.get(0));
+        }
+    }
+
+    private String getGarageStatus() {
+        String status = "open";
+
+        // If spots taken == capacity
+            // status == "full"
+
+        return status;
     }
 }
