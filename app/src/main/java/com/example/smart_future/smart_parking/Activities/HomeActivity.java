@@ -16,6 +16,7 @@ import com.example.smart_future.smart_parking.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.gson.Gson;
 
 public class HomeActivity extends AppCompatActivity {
     private int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0;
@@ -81,8 +82,15 @@ public class HomeActivity extends AppCompatActivity {
                                         // Create user and move onto next activity
                                         currentUser = new User("not parked", location);
 
+                                        // Pass the current user to the next activity
+                                        // via JSON string intent
+                                        Gson gs = new Gson();
                                         Intent intent = new Intent(HomeActivity.this, DestinationSelectionActivity.class);
-                                        intent.putExtra("current user", currentUser);
+
+                                        String currentUserJSON = gs.toJson(currentUser);
+
+                                        intent.putExtra("current user", currentUserJSON);
+
                                         startActivity(intent);
                                     }
                                 }

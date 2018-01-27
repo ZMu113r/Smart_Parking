@@ -17,6 +17,8 @@ import com.example.smart_future.smart_parking.Entities.Garage;
 import com.example.smart_future.smart_parking.Entities.User;
 import com.example.smart_future.smart_parking.Models.CardModel;
 import com.example.smart_future.smart_parking.R;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.huxq17.swipecardsview.SwipeCardsView;
 
 import java.util.ArrayList;
@@ -41,11 +43,16 @@ public class RouteSelectionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_route_selection);
 
         // unpack
-        Bundle receiveBundle = getIntent().getExtras();
-        currentUser = receiveBundle.getParcelable("current user");
-        dest = receiveBundle.getParcelable("destination");
-        garages = receiveBundle.getParcelableArrayList("garages");
-        closestGarages = receiveBundle.getParcelableArrayList("closest garages");
+        Gson gs = new Gson();
+        String currentUserJSON = getIntent().getStringExtra("current user");
+        String destinationJSON = getIntent().getStringExtra("destination");
+        String garagesJSON = getIntent().getStringExtra("garages");
+        String closestGaragesJSON = getIntent().getStringExtra("closest garages");
+
+        currentUser = gs.fromJson(currentUserJSON, User.class);
+        dest = gs.fromJson(destinationJSON, Destination.class);
+        garages = gs.fromJson(garagesJSON, new TypeToken<ArrayList<Garage>>(){}.getType());
+        closestGarages = gs.fromJson(closestGaragesJSON, new TypeToken<ArrayList<Garage>>(){}.getType());;
 
         // Grab object references from layout
         // Recycler view
@@ -61,18 +68,18 @@ public class RouteSelectionActivity extends AppCompatActivity {
         cardModelList.add(new CardModel(
                 closestGarages.get(0).getName(),
                 closestGarages.get(0).getCapacity(),
-                ""/*get destination time*/,
-                ""/*get walking time*/));
+                getDestinationTime(),
+                getWalkingTime()));
         cardModelList.add(new CardModel(
                 closestGarages.get(1).getName(),
                 closestGarages.get(1).getCapacity(),
-                ""/*get destination time*/,
-                ""/*get walking time*/));
+                getDestinationTime(),
+                getWalkingTime()));
         cardModelList.add(new CardModel(
                 closestGarages.get(2).getName(),
                 closestGarages.get(2).getCapacity(),
-                ""/*get destination time*/,
-                ""/*get walking time*/));
+                getDestinationTime(),
+                getWalkingTime()));
 
         // Create adapter
         cardAdapter = new CardAdapter(cardModelList, this);
@@ -91,6 +98,14 @@ public class RouteSelectionActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private String getDestinationTime() {
+        return "";
+    }
+
+    private String getWalkingTime() {
+        return "";
     }
 }
 

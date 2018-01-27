@@ -17,6 +17,7 @@ import com.example.smart_future.smart_parking.Handlers.HttpDataHandler;
 import com.example.smart_future.smart_parking.Handlers.DestinationSortingHandler;
 import com.example.smart_future.smart_parking.Handlers.UserLocationSortingHandler;
 import com.example.smart_future.smart_parking.R;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,10 +44,12 @@ public class DestinationSelectionActivity extends AppCompatActivity implements A
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_destination_selection);
 
-        // Get current user from intent
-        currentUser = getIntent().getExtras().getParcelable("current user");
 
-        // Create a listener for the sensors
+        // Get current user from intent
+        Gson gs = new Gson();
+        String currentUserJSON = getIntent().getStringExtra("current user");
+        currentUser = gs.fromJson(currentUserJSON, User.class);
+
 
         // Create list view access
         lvData = findViewById(R.id.lvData);
@@ -142,14 +145,18 @@ public class DestinationSelectionActivity extends AppCompatActivity implements A
                 // Create a new activity intent
                 Intent intent = new Intent(DestinationSelectionActivity.this, RouteSelectionActivity.class);
 
-                // Bundle it up
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("current user", currentUser);
-                bundle.putParcelable("destination", dest);
-                bundle.putParcelableArrayList("garages", garages);
-                bundle.putParcelableArrayList("closest garages", closestGarages);
+                // Convert objects to JSON strings
+                Gson gs = new Gson();
+                String currentUserJSON = gs.toJson(currentUser);
+                String destinationJSON = gs.toJson(dest);
+                String garagesJSON = gs.toJson(garages);
+                String closestGaragesJSON = gs.toJson(closestGarages);
 
-                intent.putExtra("bundle", bundle);
+                // Pass the JSON strings to the next activity through intent
+                intent.putExtra("current user", currentUserJSON);
+                intent.putExtra("destination", destinationJSON);
+                intent.putExtra("garages", garagesJSON);
+                intent.putExtra("closest garages", closestGaragesJSON);
 
                 startActivity(intent);
 
