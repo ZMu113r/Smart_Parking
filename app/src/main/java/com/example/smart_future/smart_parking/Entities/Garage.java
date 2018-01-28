@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * Created by Zach on 1/4/2018.
  */
 
-public class Garage implements Parcelable, Comparable {
+public class Garage implements Parcelable {
 
     private String name;
     private String status;
@@ -128,12 +128,5 @@ public class Garage implements Parcelable, Comparable {
         destinationDistance = in.readDouble();
         userDistance = in.readDouble();
         in.readTypedList(floors, Floor.CREATOR);
-    }
-
-
-    // Comparable implementation methods
-    @Override
-    public int compareTo(@NonNull Object o) {
-        return 0;
     }
 }

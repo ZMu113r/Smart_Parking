@@ -172,7 +172,7 @@ public class DestinationSelectionActivity extends AppCompatActivity implements A
         // Get distances from every garage to user's location
         for(Garage g : garages) {
             g.setDestinationDistance(Math.hypot((g.getLatitude() - dest.getLatitude()), (g.getLongitude() - dest.getLongitude())));
-            g.setUserDistance(Math.hypot((currentUser.getLocation().getLatitude() - g.getLatitude()), (currentUser.getLocation().getLongitude() - g.getLongitude())));
+            g.setUserDistance(Math.hypot((currentUser.getLatitude() - g.getLatitude()), (currentUser.getLongitude() - g.getLongitude())));
         }
 
 

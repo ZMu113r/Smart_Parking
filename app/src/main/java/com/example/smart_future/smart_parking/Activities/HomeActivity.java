@@ -80,7 +80,7 @@ public class HomeActivity extends AppCompatActivity {
                                     // CAUTION: Can be NULL - If it's not, continue to next activity
                                     if (location != null) {
                                         // Create user and move onto next activity
-                                        currentUser = new User("not parked", location);
+                                        currentUser = new User("not parked", location.getLongitude(), location.getLatitude());
 
                                         // Pass the current user to the next activity
                                         // via JSON string intent

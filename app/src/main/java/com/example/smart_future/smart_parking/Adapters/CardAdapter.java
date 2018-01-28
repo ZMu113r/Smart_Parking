@@ -35,10 +35,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.SwipeableCardV
     }
 
     @Override
-    public SwipeableCardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CardAdapter.SwipeableCardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        View view = inflater.inflate(R.layout.card_item, null);
+        View view = inflater.inflate(R.layout.card_item, parent, false);
 
         SwipeableCardViewHolder holder = new SwipeableCardViewHolder(view);
 

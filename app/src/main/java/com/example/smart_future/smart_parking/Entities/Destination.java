@@ -13,7 +13,7 @@ import static java.lang.System.out;
  * Created by Zach on 1/4/2018.
  */
 
-public class Destination implements Parcelable, Comparable {
+public class Destination implements Parcelable {
 
     private String name;
     private double longitude;
@@ -69,13 +69,5 @@ public class Destination implements Parcelable, Comparable {
         name = in.readString();
         longitude = in.readDouble();
         latitude = in.readDouble();
-    }
-
-
-    // Comparable implementation methods
-
-    @Override
-    public int compareTo(@NonNull Object o) {
-        return 0;
     }
 }

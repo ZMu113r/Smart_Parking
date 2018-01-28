@@ -29,7 +29,7 @@ public class RouteSelectionActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SwipeCardsView swipeCardsView;
     private CardAdapter cardAdapter;
-    private List<CardModel> cardModelList = new ArrayList<>();
+    private ArrayList<CardModel> cardModelList = new ArrayList<>();
 
     // Singleton objects
     private Destination dest;
@@ -44,7 +44,7 @@ public class RouteSelectionActivity extends AppCompatActivity {
 
         // unpack
         Gson gs = new Gson();
-        String currentUserJSON = getIntent().getStringExtra("current user");
+        final String currentUserJSON = getIntent().getStringExtra("current user");
         String destinationJSON = getIntent().getStringExtra("destination");
         String garagesJSON = getIntent().getStringExtra("garages");
         String closestGaragesJSON = getIntent().getStringExtra("closest garages");
@@ -56,7 +56,7 @@ public class RouteSelectionActivity extends AppCompatActivity {
 
         // Grab object references from layout
         // Recycler view
-        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.my_recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // Swipe Cards View
@@ -64,36 +64,51 @@ public class RouteSelectionActivity extends AppCompatActivity {
         swipeCardsView.retainLastCard(true);
         swipeCardsView.enableSwipe(true);
 
+
         // Get live data to display to user
-        cardModelList.add(new CardModel(
-                closestGarages.get(0).getName(),
-                closestGarages.get(0).getCapacity(),
-                getDestinationTime(),
-                getWalkingTime()));
-        cardModelList.add(new CardModel(
-                closestGarages.get(1).getName(),
-                closestGarages.get(1).getCapacity(),
-                getDestinationTime(),
-                getWalkingTime()));
-        cardModelList.add(new CardModel(
-                closestGarages.get(2).getName(),
-                closestGarages.get(2).getCapacity(),
-                getDestinationTime(),
-                getWalkingTime()));
+        if(closestGarages.size() >= 1) {
+            cardModelList.add(new CardModel(
+                    closestGarages.get(0).getName(),
+                    closestGarages.get(0).getCapacity(),
+                    getDestinationTime(),
+                    getWalkingTime()));
+        }
+        if(closestGarages.size() >= 2) {
+            cardModelList.add(new CardModel(
+                    closestGarages.get(1).getName(),
+                    closestGarages.get(1).getCapacity(),
+                    getDestinationTime(),
+                    getWalkingTime()));
+        }
+        if(closestGarages.size() >= 3) {
+            cardModelList.add(new CardModel(
+                    closestGarages.get(2).getName(),
+                    closestGarages.get(2).getCapacity(),
+                    getDestinationTime(),
+                    getWalkingTime()));
+        }
 
         // Create adapter
         cardAdapter = new CardAdapter(cardModelList, this);
+        cardAdapter.notifyDataSetChanged();
         recyclerView.setAdapter(cardAdapter);
 
         // Make clickable to move to nav screen of that route
         swipeCardsView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Gson gs = new Gson();
+
+                String currentUserJSON = gs.toJson(currentUser);
+                String destinationJSON = gs.toJson(dest);
+                //String garagesJSON = gs.toJson(garages);
+
                 Intent intent = new Intent(RouteSelectionActivity.this, NavigationActivity.class);
+
                 // re-pack
-                intent.putExtra("current user", currentUser);
-                intent.putExtra("destination", dest);
-                intent.putExtra("garages", garages);
+                intent.putExtra("current user", currentUserJSON);
+                intent.putExtra("destination", destinationJSON);
+                //intent.putExtra("garages", garagesJSON);
 
                 startActivity(intent);
             }

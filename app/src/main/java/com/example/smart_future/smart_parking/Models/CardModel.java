@@ -17,12 +17,11 @@ public class CardModel {
 
 
     public CardModel(String garage, int numSpotsLeft, String timeToArrive, String walkingTime) {
-        garage = this.garage;
-        numSpotsLeft = this.numSpotsLeft;
-        timeToArrive = this.timeToArrive;
-        walkingTime = this.walkingTime;
+        this.garage = garage;
+        this.numSpotsLeft = numSpotsLeft;
+        this.timeToArrive = timeToArrive;
+        this.walkingTime = walkingTime;
     }
-
 
     // Getters
     public String getgarage() {
