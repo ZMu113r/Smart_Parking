@@ -7,6 +7,7 @@ import javax.json.stream.JsonParser;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -58,12 +59,15 @@ public class RouteSelectionActivity extends AppCompatActivity {
         // Recycler view
         recyclerView = findViewById(R.id.my_recycler_view);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(llm);
+        /**
         // Swipe Cards View
         swipeCardsView = findViewById(R.id.swipeCardsView);
         swipeCardsView.retainLastCard(true);
         swipeCardsView.enableSwipe(true);
-
+        **/
 
         // Get live data to display to user
         if(closestGarages.size() >= 1) {
@@ -90,11 +94,12 @@ public class RouteSelectionActivity extends AppCompatActivity {
 
         // Create adapter
         cardAdapter = new CardAdapter(cardModelList, this);
-        cardAdapter.notifyDataSetChanged();
         recyclerView.setAdapter(cardAdapter);
 
+
+        /**
         // Make clickable to move to nav screen of that route
-        swipeCardsView.setOnClickListener(new View.OnClickListener() {
+        recyclerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Gson gs = new Gson();
@@ -110,9 +115,9 @@ public class RouteSelectionActivity extends AppCompatActivity {
                 intent.putExtra("destination", destinationJSON);
                 //intent.putExtra("garages", garagesJSON);
 
-                startActivity(intent);
+                v.getContext().startActivity(intent);
             }
-        });
+        });**/
     }
 
     private String getDestinationTime() {

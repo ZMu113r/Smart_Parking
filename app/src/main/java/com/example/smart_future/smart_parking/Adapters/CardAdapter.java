@@ -12,8 +12,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.smart_future.smart_parking.Activities.NavigationActivity;
+import com.example.smart_future.smart_parking.Activities.RouteSelectionActivity;
 import com.example.smart_future.smart_parking.Models.CardModel;
 import com.example.smart_future.smart_parking.R;
+import com.google.gson.Gson;
 import com.huxq17.swipecardsview.BaseCardAdapter;
 
 import java.util.List;
@@ -60,23 +62,21 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.SwipeableCardV
         // Grab view element references
         CardModel cardmodel = modelList.get(position);
 
-        TextView garageTextView = holder.garage;
-        TextView spotsLeftTextView = holder.spots_left;
-        TextView arrivalTimeTextView = holder.arrival_time;
-        TextView walkingTimeTextView = holder.walking_time;
+        String spots = "Open spots: " + String.valueOf(cardmodel.getNumSpotsLeft());
+        String arrival_time = "Will arrive at: " + String.valueOf(cardmodel.getTimeToArrive());
+        String walking_time = "Walk distance in: " + String.valueOf(cardmodel.getWalkingTime());
 
-        // Give them content to display
-        garageTextView.setText(String.valueOf(cardmodel.getgarage()));
-        spotsLeftTextView.setText(String.valueOf(cardmodel.getNumSpotsLeft()));
-        arrivalTimeTextView.setText(String.valueOf(cardmodel.getTimeToArrive()));
-        walkingTimeTextView.setText(String.valueOf(cardmodel.getWalkingTime()));
+        holder.garage.setText(String.valueOf(cardmodel.getgarage()));
+        holder.spots_left.setText(spots);
+        holder.arrival_time.setText(arrival_time);
+        holder.walking_time.setText(walking_time);
     }
 
-    class SwipeableCardViewHolder extends RecyclerView.ViewHolder {
-        TextView garage;
-        TextView spots_left;
-        TextView arrival_time;
-        TextView walking_time;
+    public class SwipeableCardViewHolder extends RecyclerView.ViewHolder {
+        protected TextView garage;
+        protected TextView spots_left;
+        protected TextView arrival_time;
+        protected TextView walking_time;
 
         public SwipeableCardViewHolder(View itemView) {
             super(itemView);
@@ -85,6 +85,26 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.SwipeableCardV
             spots_left = itemView.findViewById(R.id.spots_left);
             arrival_time = itemView.findViewById(R.id.arrival_time);
             walking_time = itemView.findViewById(R.id.walking_time);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Gson gs = new Gson();
+
+                    //String currentUserJSON = gs.toJson(currentUser);
+                    //String destinationJSON = gs.toJson(dest);
+                    //String garagesJSON = gs.toJson(garages);
+
+                    Intent intent = new Intent(v.getContext(), NavigationActivity.class);
+
+                    // re-pack
+                    //intent.putExtra("current user", currentUserJSON);
+                    //intent.putExtra("destination", destinationJSON);
+                    //intent.putExtra("garages", garagesJSON);
+
+                    v.getContext().startActivity(intent);
+                }
+            });
         }
     }
 }

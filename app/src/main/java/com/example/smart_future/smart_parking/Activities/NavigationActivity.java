@@ -186,10 +186,12 @@ public class NavigationActivity extends FragmentActivity implements OnMapReadyCa
                                 });
                                 polylineAnimator.start();
 
+                                /**
                                 // Add car marker
-                                marker = mMap.addMarker(new MarkerOptions().position(dest))
+                               marker = mMap.addMarker(new MarkerOptions().position(dest))
                                         .isFlat(true)
                                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.car));
+                                 **/
 
                                 // Car moving
                                 handler = new Handler();
