@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.animation.LinearInterpolator;
 
 import com.example.smart_future.smart_parking.Entities.Destination;
+import com.example.smart_future.smart_parking.Entities.Garage;
 import com.example.smart_future.smart_parking.Entities.User;
 import com.example.smart_future.smart_parking.R;
 import com.example.smart_future.smart_parking.Remote.Common;
@@ -29,6 +30,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.SquareCap;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -44,7 +46,11 @@ public class NavigationActivity extends FragmentActivity implements OnMapReadyCa
 
     private GoogleMap mMap;
 
-    private Destination dest;
+    private ArrayList<Garage> closestGarages;
+
+    private String chosenGarage;
+
+    private Garage destinationGarage;
 
     private User currentUser;
 
@@ -81,11 +87,19 @@ public class NavigationActivity extends FragmentActivity implements OnMapReadyCa
         // unpack
         Gson gs = new Gson();
 
-        String destinationJSON = getIntent().getStringExtra("destination");
         String currentUserJSON = getIntent().getStringExtra("current user");
+        String closestGaragesJSON = getIntent().getStringExtra("closest garages");
+        String chosenGarageJSON = getIntent().getStringExtra("chosen garage");
 
-        dest = gs.fromJson(destinationJSON, Destination.class);
         currentUser = gs.fromJson(currentUserJSON, User.class);
+        closestGarages = gs.fromJson(closestGaragesJSON, new TypeToken<ArrayList<Garage>>(){}.getType());
+        chosenGarage = gs.fromJson(chosenGarageJSON, String.class);
+
+        // Get  destination garage from list of closest garages
+        for (Garage g : closestGarages) {
+            if(g.getName().compareTo(chosenGarage) == 0)
+                destinationGarage = g;
+        }
 
         polylineList = new ArrayList<>();
 
@@ -106,8 +120,8 @@ public class NavigationActivity extends FragmentActivity implements OnMapReadyCa
         // Add a marker for current location
 
         // Add a marker to destination and move the camera
-        final LatLng destination = new LatLng(dest.getLatitude(), dest.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(destination).title(dest.getName()));
+        final LatLng destination = new LatLng(destinationGarage.getLatitude(), destinationGarage.getLongitude());
+        mMap.addMarker(new MarkerOptions().position(destination).title(destinationGarage.getName()));
 
         // Zoom in
         float zoomLevel = 15.0f;

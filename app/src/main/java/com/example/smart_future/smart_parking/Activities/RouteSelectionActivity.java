@@ -93,7 +93,7 @@ public class RouteSelectionActivity extends AppCompatActivity {
         }
 
         // Create adapter
-        cardAdapter = new CardAdapter(cardModelList, this);
+        cardAdapter = new CardAdapter(currentUser, closestGarages, cardModelList, this);
         recyclerView.setAdapter(cardAdapter);
 
 

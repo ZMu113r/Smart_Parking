@@ -13,11 +13,14 @@ import android.widget.Toast;
 
 import com.example.smart_future.smart_parking.Activities.NavigationActivity;
 import com.example.smart_future.smart_parking.Activities.RouteSelectionActivity;
+import com.example.smart_future.smart_parking.Entities.Garage;
+import com.example.smart_future.smart_parking.Entities.User;
 import com.example.smart_future.smart_parking.Models.CardModel;
 import com.example.smart_future.smart_parking.R;
 import com.google.gson.Gson;
 import com.huxq17.swipecardsview.BaseCardAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,13 +28,18 @@ import java.util.List;
  */
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.SwipeableCardViewHolder> {
+    private User currentUser;
+
+    private ArrayList<Garage> closestGarages;
 
     private List<CardModel> modelList;
 
     private Context context;
 
 
-    public CardAdapter(List<CardModel> modelList, Context context) {
+    public CardAdapter(User currentUser, ArrayList<Garage> closestGarages, List<CardModel> modelList, Context context) {
+        this.currentUser = currentUser;
+        this.closestGarages = closestGarages;
         this.modelList = modelList;
         this.context = context;
     }
@@ -91,16 +99,16 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.SwipeableCardV
                 public void onClick(View v) {
                     Gson gs = new Gson();
 
-                    //String currentUserJSON = gs.toJson(currentUser);
-                    //String destinationJSON = gs.toJson(dest);
-                    //String garagesJSON = gs.toJson(garages);
+                    String currentUserJSON = gs.toJson(currentUser);
+                    String closestGaragesJSON = gs.toJson(closestGarages);
+                    String chosenGarageJSON = gs.toJson(garage.getText().toString());
 
                     Intent intent = new Intent(v.getContext(), NavigationActivity.class);
 
                     // re-pack
-                    //intent.putExtra("current user", currentUserJSON);
-                    //intent.putExtra("destination", destinationJSON);
-                    //intent.putExtra("garages", garagesJSON);
+                    intent.putExtra("current user", currentUserJSON);
+                    intent.putExtra("closest garages", closestGaragesJSON);
+                    intent.putExtra("chosen garage", chosenGarageJSON);
 
                     v.getContext().startActivity(intent);
                 }

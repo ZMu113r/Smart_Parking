@@ -47,4 +47,8 @@ dependencies {
     // Retrofit dependency for Google HTTP client
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-scalars:2.3.0'
+
+    // Mongoose dependency
+    compile 'org.mongodb:mongodb-driver:3.6.1'
+    compile 'org.mongodb:mongo-java-driver:3.6.1'
 }
