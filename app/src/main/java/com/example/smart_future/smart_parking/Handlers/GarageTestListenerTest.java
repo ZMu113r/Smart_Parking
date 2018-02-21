@@ -11,6 +11,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.bson.Document;
 
+import com.example.smart_future.smart_parking.R;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
@@ -26,20 +27,14 @@ import com.example.smart_future.smart_parking.Crypto.CryptoException;
 
 public class GarageTestListenerTest {
     @SuppressWarnings("resource")
-        public static void main(String[] args) throws Exception {
+        public static void run() throws Exception {
             Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
             mongoLogger.setLevel(Level.SEVERE);
 
             Scanner scanner = new Scanner(new File("res/resources.cfg"));
 
-            String key = scanner.nextLine();
+            //insert crypto code here when ready
             String pwd = "";
-
-            File encryptedFile = new File("res/mongosrv.conf");
-            try {
-                pwd = CryptoUtils.decrypt(key, encryptedFile);
-            } catch (CryptoException ex) {
-            }
 
             MongoClientURI uri = new MongoClientURI("mongodb+srv://n8houl:" + pwd + "@seniordesign2-ssssl.mongodb.net/");
 
@@ -50,38 +45,4 @@ public class GarageTestListenerTest {
             Thread threadTest = new Thread(new GarageListener(collectionTest), "ThreadTest");
             threadTest.start();
         }
-
-    public static String encrypt(String strClearText, String strKey) throws Exception{
-        String strData="";
-
-        try {
-            SecretKeySpec skeyspec=new SecretKeySpec(strKey.getBytes(),"Blowfish");
-            Cipher cipher=Cipher.getInstance("Blowfish");
-            cipher.init(Cipher.ENCRYPT_MODE, skeyspec);
-            byte[] encrypted=cipher.doFinal(strClearText.getBytes());
-            strData=new String(encrypted);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new Exception(e);
-        }
-        return strData;
-    }
-
-    public static String decrypt(String strEncrypted,String strKey) throws Exception{
-        String strData="";
-
-        try {
-            SecretKeySpec skeyspec=new SecretKeySpec(strKey.getBytes(),"Blowfish");
-            Cipher cipher=Cipher.getInstance("Blowfish");
-            cipher.init(Cipher.DECRYPT_MODE, skeyspec);
-            byte[] decrypted=cipher.doFinal(strEncrypted.getBytes());
-            strData=new String(decrypted);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new Exception(e);
-        }
-        return strData;
-    }
 }

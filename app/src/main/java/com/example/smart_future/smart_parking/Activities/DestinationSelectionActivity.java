@@ -5,13 +5,18 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.example.smart_future.smart_parking.Crypto.CryptoException;
+import com.example.smart_future.smart_parking.Crypto.CryptoUtils;
 import com.example.smart_future.smart_parking.Entities.Destination;
 import com.example.smart_future.smart_parking.Entities.Garage;
+import com.example.smart_future.smart_parking.Entities.Spot;
 import com.example.smart_future.smart_parking.Entities.User;
 import com.example.smart_future.smart_parking.Handlers.HttpDataHandler;
 import com.example.smart_future.smart_parking.Handlers.DestinationSortingHandler;
@@ -22,6 +27,17 @@ import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import org.bson.Document;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,12 +54,27 @@ public class DestinationSelectionActivity extends AppCompatActivity implements A
 
     private User currentUser;
 
+    private String pwdDecrypted = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_destination_selection);
 
+        String key = "SeniorDesignG35!";
+        String pwd = getResources().getString(R.string.pwd);
+
+        Log.i("DESTINATEIONSCREEN", "pwd = " + pwd);
+
+        //String pwdDecrypted = "";
+
+        //try {
+        //    pwdDecrypted = CryptoUtils.decrypt(key, pwd);
+        //    Log.i("DESTINATIONSCREEN", "pwd=" + pwdDecrypted);
+        //} catch (CryptoException e) {
+        //    e.printStackTrace();
+        //}
 
         // Get current user from intent
         Gson gs = new Gson();
@@ -122,19 +153,19 @@ public class DestinationSelectionActivity extends AppCompatActivity implements A
 
                 // Fill list of Garages
                 /*** IMPLEMENT FLOOR CREATION WITH "LIVE" SENSOR DATA ***/
-                garages.add(new Garage("A", getGarageStatus(), 1623, 28.599628287126819, -81.205337047576904,
+                garages.add(new Garage("A", "open"/*getGarageStatus("A", 1623)*/, 1623, 28.599628287126819, -81.205337047576904,
                         null));
-                garages.add(new Garage("B", getGarageStatus(), 1259, 28.596894840943857, -81.199806207588182,
+                garages.add(new Garage("B", "open"/*getGarageStatus("B", 1259)*/, 1259, 28.596894840943857, -81.199806207588182,
                         null));
-                garages.add(new Garage("C", getGarageStatus(), 1852, 28.60190616876525, -81.19560050385283,
+                garages.add(new Garage("C", "open"/*getGarageStatus("C", 1852)*/, 1852, 28.60190616876525, -81.19560050385283,
                         null));
-                garages.add(new Garage("D", getGarageStatus(), 1241, 28.605372511338587, -81.197520965507493,
+                garages.add(new Garage("D", "open"/*getGarageStatus("D", 1241)*/, 1241, 28.605372511338587, -81.197520965507493,
                         null));
-                garages.add(new Garage("H", getGarageStatus(), 1284, 28.604800000000001, -81.200800000000001,
+                garages.add(new Garage("H", "open"/*getGarageStatus("H", 1284)*/, 1284, 28.604800000000001, -81.200800000000001,
                         null));
-                garages.add(new Garage("I", getGarageStatus(), 1231, 28.601134467682712, -81.205452257564559,
+                garages.add(new Garage("I", "open"/*getGarageStatus("I", 1231)*/, 1231, 28.601134467682712, -81.205452257564559,
                         null));
-                garages.add(new Garage("Libra", getGarageStatus(), 1007, 28.595600375707001, -81.196646690368652,
+                garages.add(new Garage("Libra", "open"/*getGarageStatus("Libra", 1007)*/, 1007, 28.595600375707001, -81.196646690368652,
                         null));
 
                 // Find best garages for chosen destination
@@ -193,11 +224,23 @@ public class DestinationSelectionActivity extends AppCompatActivity implements A
         }
     }
 
-    private String getGarageStatus() {
-        String status = "open";
+    private String getGarageStatus(String garageName, double capacity) {
+        String status = "Open";
+        int isOccupied = 0;
 
-        // If spots taken == capacity
-            // status == "full"
+        MongoClientURI uri = new MongoClientURI("mongodb+srv://n8houl:nah11796@seniordesign2-ssssl.mongodb.net/");
+
+        MongoClient mongoClient = new MongoClient(uri);
+
+        @SuppressWarnings("deprecation")
+        MongoDatabase db = mongoClient.getDatabase("Garages");
+
+        MongoCollection<Document> coll = db.getCollection("Garage" + garageName);
+
+        long count = coll.count(new Document("occupied", true));
+
+        if(count == capacity)
+            status = "Full";
 
         return status;
     }
